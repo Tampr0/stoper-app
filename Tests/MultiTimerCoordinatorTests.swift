@@ -1,4 +1,5 @@
 import XCTest
+@testable import StoperAppCore
 
 final class MultiTimerCoordinatorTests: XCTestCase {
     func testAddTimerUntilMaxStoresEightTimersAndDisablesFurtherAdds() {

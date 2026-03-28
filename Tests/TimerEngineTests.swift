@@ -1,4 +1,5 @@
 import XCTest
+@testable import StoperAppCore
 
 final class TimerEngineTests: XCTestCase {
     func testStartFromIdleMarksTimerRunningWithoutChangingAccumulatedElapsed() {
