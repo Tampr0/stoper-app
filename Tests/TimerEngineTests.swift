@@ -1,4 +1,5 @@
 import XCTest
+
 @testable import StoperAppCore
 
 final class TimerEngineTests: XCTestCase {
@@ -93,9 +94,15 @@ final class TimerEngineTests: XCTestCase {
 
         XCTAssertNotNil(lap)
         XCTAssertEqual(engine.timer.lapTimes.count, 1)
-        XCTAssertEqual(lap?.repNumber, 1)
-        XCTAssertEqual(lap?.elapsedTime, 12, accuracy: 0.000_1)
-        XCTAssertEqual(lap?.splitTime, 12, accuracy: 0.000_1)
+
+        guard let lap else {
+            XCTFail("Expected lap to be created while timer is running")
+            return
+        }
+
+        XCTAssertEqual(lap.repNumber, 1)
+        XCTAssertEqual(lap.elapsedTime, 12, accuracy: 0.000_1)
+        XCTAssertEqual(lap.splitTime, 12, accuracy: 0.000_1)
         XCTAssertEqual(engine.timer.currentRep, 1)
     }
 
@@ -109,9 +116,14 @@ final class TimerEngineTests: XCTestCase {
         _ = engine.lap(at: t1)
         let secondLap = engine.lap(at: t2)
 
-        XCTAssertEqual(secondLap?.repNumber, 2)
-        XCTAssertEqual(secondLap?.elapsedTime, 30, accuracy: 0.000_1)
-        XCTAssertEqual(secondLap?.splitTime, 18, accuracy: 0.000_1)
+        guard let secondLap else {
+            XCTFail("Expected second lap to be created while timer is running")
+            return
+        }
+
+        XCTAssertEqual(secondLap.repNumber, 2)
+        XCTAssertEqual(secondLap.elapsedTime, 30, accuracy: 0.000_1)
+        XCTAssertEqual(secondLap.splitTime, 18, accuracy: 0.000_1)
         XCTAssertEqual(engine.timer.lapTimes.count, 2)
         XCTAssertEqual(engine.timer.currentRep, 2)
     }
