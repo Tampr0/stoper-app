@@ -15,13 +15,20 @@ struct TimerEngine {
         timer.pausedAt = nil
     }
 
-    mutating func stop(at now: Date = Date()) {
+    mutating func pause(at now: Date = Date()) {
         guard timer.isRunning else { return }
 
-        timer.accumulatedElapsed = elapsed(at: now)
+        if let startedAt = timer.startedAt {
+            timer.accumulatedElapsed += now.timeIntervalSince(startedAt)
+        }
+
         timer.isRunning = false
         timer.startedAt = nil
         timer.pausedAt = now
+    }
+
+    mutating func stop(at now: Date = Date()) {
+        pause(at: now)
     }
 
     mutating func reset() {
@@ -39,7 +46,7 @@ struct TimerEngine {
 
         let totalElapsed = elapsed(at: now)
         let previousElapsed = timer.lapTimes.last?.elapsedTime ?? 0
-        let nextRep = timer.currentRep + 1
+        let nextRep = timer.lapTimes.count + 1
         let record = LapRecord(
             repNumber: nextRep,
             elapsedTime: totalElapsed,
@@ -53,10 +60,14 @@ struct TimerEngine {
     }
 
     func elapsed(at now: Date = Date()) -> TimeInterval {
-        guard timer.isRunning, let startedAt = timer.startedAt else {
+        if timer.isRunning, let startedAt = timer.startedAt {
+            return timer.accumulatedElapsed + now.timeIntervalSince(startedAt)
+        }
+
+        if timer.pausedAt != nil {
             return timer.accumulatedElapsed
         }
 
-        return timer.accumulatedElapsed + now.timeIntervalSince(startedAt)
+        return 0
     }
 }
