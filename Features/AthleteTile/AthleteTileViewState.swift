@@ -1,6 +1,7 @@
 import Foundation
 
 struct AthleteTileViewState: Equatable, Sendable {
+    let id: UUID
     let name: String
     let status: AthleteTileStatus
     let elapsedText: String

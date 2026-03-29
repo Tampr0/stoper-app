@@ -16,6 +16,7 @@ struct AthleteTilePresenter {
         let elapsed = Self.elapsed(for: timer, at: now)
 
         return AthleteTileViewState(
+            id: timer.id,
             name: timer.name,
             status: status,
             elapsedText: Self.formatElapsed(elapsed),

@@ -3,6 +3,10 @@ import Foundation
 struct AthleteTileController {
     private var engine: TimerEngine
 
+    var timer: AthleteTimer {
+        engine.timer
+    }
+
     init(engine: TimerEngine) {
         self.engine = engine
     }
